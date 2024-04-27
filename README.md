@@ -2,16 +2,16 @@
 
 ## users table
 
-| Column             | Type                | Options                                                |
-|--------------------|---------------------|--------------------------------------------------------|
-| nickname           | string              | null: false                                            |
-| email              | string              | null: false, unique: true                              |
-| encrypted_password | string              | null: false, format: {with: /\A[a-zA-Z0-9]+\z/}        |
-| last_name          | string              | null: false, format: {with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/} |
-| first_name         | string              | null: false, format: {with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/} |
-| last_name_kana     | string              | null: false, format: {with: /\A[ァ-ヴー]+\z/}           |
-| first_name_kana    | string              | null: false, format: {with: /\A[ァ-ヴー]+\z/}           |
-| birth_date         | date                | null: false                                            |
+| Column             | Type                | Options       |
+|--------------------|---------------------|---------------|
+| nickname           | string              | null: false   |
+| email              | string              | null: false   |
+| encrypted_password | string              | null: false   |
+| last_name          | string              | null: false   |
+| first_name         | string              | null: false   |
+| last_name_kana     | string              | null: false   |
+| first_name_kana    | string              | null: false   |
+| birth_date         | date                | null: false   |
 
 ### Association
 
@@ -20,22 +20,23 @@
 
 ## items table
 
-| Column                              | Type       | Options                        |
-|-------------------------------------|------------|--------------------------------|
-| item_name                           | string     | null: false                    |
-| item_info                           | text       | null: false                    |
-| item_category                       | text       | null: false                    |
-| item_sales_status_id                | integer    | null: false, active_hash       |
-| item_shipping_fee_status_id         | integer    | null: false, active_hash       |
-| item_prefecture_id                  | integer    | null: false, active_hash       |
-| item_scheduled_delivery_id          | integer    | null: false, active_hash       |
-| item_price                          | integer    | null: false,                   |
-| user                                | references | null: false, foreign_key: true |
+| Column                         | Type       | Options                         |
+|--------------------------------|------------|---------------------------------|
+| name                           | string     | null: false                     |
+| info                           | text       | null: false                     |
+| category_id                    | integer    | null: false                     |
+| sales_status_id                | integer    | null: false                     |
+| shipping_fee_status_id         | integer    | null: false                     |
+| prefecture_id                  | integer    | null: false                     |
+| scheduled_delivery_id          | integer    | null: false                     |
+| price                          | integer    | null: false                     |
+| user                           | references | null: false, foreign_key: true  |
 
 ### Association
 
 - belongs_to :user
 - has_one :order
+- belongs_to_active_hash :item_category
 - belongs_to_active_hash :item_sales_status
 - belongs_to_active_hash :item_shipping_fee_status
 - belongs_to_active_hash :prefecture
@@ -56,15 +57,15 @@
 
 ## shipping_infos table
 
-| Column        | Type       | Options                                          |
-|---------------|------------|--------------------------------------------------|
-| order_id      | references | null: false, foreign_key: true                   |
-| postal_code   | string     | null: false, format: {with: /\A\d{3}[-]\d{4}\z/} |
-| prefecture_id | text       | null: false, active_hash                         |
-| city          | string     | null: false                                      |
-| address       | string     | null: false                                      |
-| building      | string     |                                                  |
-| phone_number  | string     | null: false, format: {with: /\A\d{11}\z/}        |
+| Column        | Type       | Options                        |
+|---------------|------------|--------------------------------|
+| order         | references | null: false, foreign_key: true |
+| postal_code   | string     | null: false                    |
+| prefecture_id | integer    | null: false, active_hash       |
+| city          | string     | null: false                    |
+| address       | string     | null: false                    |
+| building      | string     |                                |
+| phone_number  | string     | null: false                    |
 
 ### Association
 
@@ -126,9 +127,28 @@
 
 ### Association
 
-- has_many :orders
+- has_many :items
 - has_many :shipping_infos
 
+## ActiveHash: item_category
+
+| id  | name                  |
+|-----|-----------------------|
+| 1   | ---                   |
+| 2   | メンズ                 |
+| 3   | レディース              |
+| 4   | ベビー・キッズ          |
+| 5   | インテリア・住まい・小物  |
+| 6   | 本・音楽・ゲーム        |
+| 7   | おもちゃ・ホビー・グッズ  |
+| 8   | 家電・スマホ・カメラ     |
+| 9   | スポーツ・レジャー       |
+| 10  | ハンドメイド            |
+| 11  | その他                 |
+
+### Association
+
+- has_many :items
 
 ## ActiveHash: item_sales_status
 
@@ -144,7 +164,7 @@
 
 ### Association
 
-- has_many :orders
+- has_many :items
 
 ## ActiveHash: item_shipping_fee_status
 
@@ -156,7 +176,7 @@
 
 ### Association
 
-- has_many :orders
+- has_many :items
 
 ## ActiveHash: item_schedule_delivery
 
@@ -169,4 +189,4 @@
 
 ### Association
 
-- has_many :orders
+- has_many :items
