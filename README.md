@@ -2,16 +2,16 @@
 
 ## users table
 
-| Column             | Type                | Options       |
-|--------------------|---------------------|---------------|
-| nickname           | string              | null: false   |
-| email              | string              | null: false   |
-| encrypted_password | string              | null: false   |
-| last_name          | string              | null: false   |
-| first_name         | string              | null: false   |
-| last_name_kana     | string              | null: false   |
-| first_name_kana    | string              | null: false   |
-| birth_date         | date                | null: false   |
+| Column             | Type                | Options                     |
+|--------------------|---------------------|-----------------------------|
+| nickname           | string              | null: false                 |
+| email              | string              | null: false, unique: true   |
+| encrypted_password | string              | null: false                 |
+| last_name          | string              | null: false                 |
+| first_name         | string              | null: false                 |
+| last_name_kana     | string              | null: false                 |
+| first_name_kana    | string              | null: false                 |
+| birth_date         | date                | null: false                 |
 
 ### Association
 
@@ -36,11 +36,11 @@
 
 - belongs_to :user
 - has_one :order
-- belongs_to_active_hash :item_category
-- belongs_to_active_hash :item_sales_status
-- belongs_to_active_hash :item_shipping_fee_status
+- belongs_to_active_hash :category
+- belongs_to_active_hash :sales_status
+- belongs_to_active_hash :shipping_fee_status
 - belongs_to_active_hash :prefecture
-- belongs_to_active_hash :item_schedule_delivery
+- belongs_to_active_hash :schedule_delivery
 
 ## orders table
 
@@ -61,7 +61,7 @@
 |---------------|------------|--------------------------------|
 | order         | references | null: false, foreign_key: true |
 | postal_code   | string     | null: false                    |
-| prefecture_id | integer    | null: false, active_hash       |
+| prefecture_id | integer    | null: false                    |
 | city          | string     | null: false                    |
 | address       | string     | null: false                    |
 | building      | string     |                                |
@@ -130,7 +130,7 @@
 - has_many :items
 - has_many :shipping_infos
 
-## ActiveHash: item_category
+## ActiveHash: category
 
 | id  | name                  |
 |-----|-----------------------|
@@ -150,7 +150,7 @@
 
 - has_many :items
 
-## ActiveHash: item_sales_status
+## ActiveHash: sales_status
 
 | id  | name              |
 |-----|-------------------|
@@ -166,7 +166,7 @@
 
 - has_many :items
 
-## ActiveHash: item_shipping_fee_status
+## ActiveHash: shipping_fee_status
 
 | id  | name              |
 |-----|-------------------|
@@ -178,7 +178,7 @@
 
 - has_many :items
 
-## ActiveHash: item_schedule_delivery
+## ActiveHash: schedule_delivery
 
 | id  | name              |
 |-----|------------------ |
