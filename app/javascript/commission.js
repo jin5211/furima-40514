@@ -13,3 +13,5 @@ function commission (){
     }
   });
 };
+
+window.addEventListener('turbo:load', commission);
