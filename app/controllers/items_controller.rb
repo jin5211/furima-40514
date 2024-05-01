@@ -1,11 +1,11 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   def index
-    # @items = Item.all
+    @items = Item.all
+    @count = Item.count
   end
 
   def new
-    # binding.pry
     @item = Item.new
   end
 
