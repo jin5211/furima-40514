@@ -12,6 +12,11 @@ RSpec.describe Item, type: :model do
       end
     end
     context '商品出品できないとき' do
+      it '画像が空では出品できない' do
+        @item.image = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include "Image can't be blank"
+      end
       it '商品名が空では出品できない' do
         @item.name = ''
         @item.valid?
@@ -61,6 +66,11 @@ RSpec.describe Item, type: :model do
         @item.price = Faker::Number.within(range: 10_000_000..100_000_000)
         @item.valid?
         expect(@item.errors.full_messages).to include 'Price must be less than or equal to 9999999'
+      end
+      it 'userが紐づいていないと出品できない' do
+        @item.user = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include "User must exist"
       end
     end
   end

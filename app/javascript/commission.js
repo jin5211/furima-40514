@@ -6,8 +6,8 @@ function commission (){
 
     if (!isNaN(price.value)) {
       let priceValue = price.value;
-      let taxValue = (priceValue * 0.1).toFixed(0);
-      let profitVale = (priceValue - taxValue).toFixed(0);
+      let taxValue = Math.floor(priceValue * 0.1);
+      let profitVale = priceValue - taxValue;
       addTaxPrice.innerHTML = taxValue;
       profit.innerHTML = profitVale;
     }
