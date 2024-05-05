@@ -1,5 +1,8 @@
 class OrdersController < ApplicationController
   before_action :set_item
+  before_action :sold_out?, only: [:index, :create]
+  before_action :authenticate_user!, only: [:index, :create]
+  before_action :are_you_seller?, only: [:index, :create]
 
   def index
     @order_shipping_info = OrderShippingInfo.new
@@ -28,5 +31,17 @@ class OrdersController < ApplicationController
 
   def set_item
     @item = Item.find(params[:item_id])
+  end
+
+  def are_you_seller?
+    if @item.user_id == current_user.id
+      redirect_to root_path
+    end
+  end
+
+  def sold_out?
+    if @item.order.present?
+      redirect_to root_path
+    end
   end
 end
