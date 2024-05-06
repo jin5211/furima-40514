@@ -1,6 +1,6 @@
 class OrderShippingInfo
   include ActiveModel::Model
-  attr_accessor :item_id, :user_id, :postal_code, :prefecture_id, :city, :address, :building, :phone_number
+  attr_accessor :item_id, :user_id, :postal_code, :prefecture_id, :city, :address, :building, :phone_number, :token, :price
 
   with_options presence: true do
     validates :item_id
@@ -11,6 +11,8 @@ class OrderShippingInfo
     validates :address
     validates :phone_number,
               format: { with: /\A\d{10,11}\z/, message: 'is invalid and should be 10 or 11 digits. Not include hyphen(-)' }
+    validates :token
+    validates :price
   end
   validates :prefecture_id, numericality: { other_than: 0, message: "can't be blank" }
 
