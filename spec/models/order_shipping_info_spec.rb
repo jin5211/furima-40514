@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe OrderShippingInfo, type: :model do
   before do
     user = FactoryBot.create(:user)
-    item = FactoryBot.create(:item, user_id: user.id)
+    item = FactoryBot.create(:item)
     @order_shipping_info = FactoryBot.build(:order_shipping_info, user_id: user.id, item_id: item.id)
   end
 
@@ -21,6 +21,16 @@ RSpec.describe OrderShippingInfo, type: :model do
     end
 
     context '内容に問題がある場合' do
+      it 'item_idがないと保存できたいこと' do
+        @order_shipping_info.item_id = nil
+        @order_shipping_info.valid?
+        expect(@order_shipping_info.errors.full_messages).to include("Item can't be blank")
+      end
+      it 'user_idがないと保存できないこと' do
+        @order_shipping_info.user_id = nil
+        @order_shipping_info.valid?
+        expect(@order_shipping_info.errors.full_messages).to include("User can't be blank")
+      end
       it 'postal_codeが空だと保存できないこと' do
         @order_shipping_info.postal_code = ''
         @order_shipping_info.valid?
