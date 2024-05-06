@@ -31,6 +31,11 @@ RSpec.describe OrderShippingInfo, type: :model do
         @order_shipping_info.valid?
         expect(@order_shipping_info.errors.full_messages).to include("User can't be blank")
       end
+      it 'トークンがないと保存できたいこと' do
+        @order_shipping_info.token = nil
+        @order_shipping_info.valid?
+        expect(@order_shipping_info.errors.full_messages).to include("Token can't be blank")
+      end
       it 'postal_codeが空だと保存できないこと' do
         @order_shipping_info.postal_code = ''
         @order_shipping_info.valid?
