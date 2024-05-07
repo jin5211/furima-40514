@@ -1,17 +1,17 @@
-function commission (){
+function commission() {
   const price = document.getElementById('item-price');
-  const addTaxPrice = document.getElementById('add-tax-price');
-  const profit = document.getElementById('profit');
-  price.addEventListener('keyup', () =>{
+  if (price) {
+    price.addEventListener('input', () => {
+      if (!isNaN(price.value)) {
+        let priceValue = parseFloat(price.value);
+        let taxValue = Math.floor(priceValue * 0.1);
+        let profitValue = priceValue - taxValue;
+        document.getElementById('add-tax-price').innerHTML = taxValue;
+        document.getElementById('profit').innerHTML = profitValue;
+      }
+    });
+  }
+}
 
-    if (!isNaN(price.value)) {
-      let priceValue = price.value;
-      let taxValue = Math.floor(priceValue * 0.1);
-      let profitVale = priceValue - taxValue;
-      addTaxPrice.innerHTML = taxValue;
-      profit.innerHTML = profitVale;
-    }
-  });
-};
-
-window.addEventListener('turbo:load', commission);
+window.addEventListener("turbo:load", commission);
+window.addEventListener("turbo:render", commission);
